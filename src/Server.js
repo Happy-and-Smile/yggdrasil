@@ -18,7 +18,7 @@ function loader(moduleOptions) {
    */
   async function join(accessToken, selectedProfile, serverid, sharedsecret, serverkey) {
     if (accessToken?.auth) {
-      if(accessToken.auth === "easymc") {
+      if (accessToken.auth === "easymc") {
         return await utils.call(
           moduleOptions?.host ??
           "https://sessionserver.easymc.io",
@@ -31,20 +31,20 @@ function loader(moduleOptions) {
           },
           moduleOptions?.agent
         )
+      } else if (accessToken.auth === "mcleaks") {
+        return await utils.call(
+          moduleOptions?.host ??
+          "https://auth.mcleaks.net",
+          'v1/joinserver',
+          {
+            mcname: accessToken.mcname,
+            session: accessToken.session,
+            server: accessToken.server,
+            serverhash: utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
+          },
+          moduleOptions?.agent
+        )
       }
-    } else if(accessToken.auth === "mcleaks") {
-      return await utils.call(
-        moduleOptions?.host ??
-        "https://auth.mcleaks.net/v1",
-        'joinserver',
-        {
-          mcname: accessToken.mcname,
-          session: accessToken.session,
-          server: accessToken.server,
-          serverhash: utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
-        },
-        moduleOptions?.agent
-      )
     } else {
       return await utils.call(
         moduleOptions?.host ??
