@@ -30,7 +30,6 @@ function loader(moduleOptions) {
         'redeem',
         {
           token: options.alt,
-          client: "mod-1.18"
         }
       ))?.result
     } else {
